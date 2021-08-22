@@ -1,0 +1,31 @@
+body{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    top: -15vh;
+}
+#outSide{
+    width: fit-content;
+    height: fit-content;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 1rem ;
+    padding: 1rem;
+    margin: auto;
+    animation: showItem .5s ease-in backwards;
+    box-shadow: 0 0 1rem white;
+}
+#submitLoginBtn{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    line-height: 3rem;
+}
+.inputDiv{
+    margin: 1rem;
+}
+input{
+    float: right;
+}
+#submitLoginBtn{
+    margin: 0 auto;
+}

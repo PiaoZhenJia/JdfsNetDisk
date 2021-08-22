@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -15vh;
+}
+
+.outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 30rem;
+    height: 20rem;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: .6rem;
+    width: 10rem;
+    height: 10rem;
+    background-color: rgba(255,255,255,0.5);
+    box-shadow: 0 0 1rem white;
+    border-radius: 1rem;
+}
+
+.inner:hover{
+    background-color: white;
+    box-shadow: 0 0 5rem white;
+}
+
+.inner > img {
+    width: 3rem;
+    height: 3rem;
+}

@@ -1,0 +1,11 @@
+#topFrame{
+    width: 100%;
+    height: 15vh;
+}
+#mainFrame{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 85vh;
+    width: 100%;
+}

@@ -1,0 +1,48 @@
+my-param:
+  #是否开启高风险控制器
+  security:
+    open-dev-controller: true
+spring:
+#  mvc:
+#    static-path-pattern: classpath:/static/**
+#  profiles:
+#    active: resource
+  #热部署插件配置
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+  servlet:
+    multipart:
+      #最大文件,设置成-1可以解除限制
+      max-file-size: 100MB
+      max-request-size: 1GB
+
+server:
+  port: 8066
+  #配置容器最高200M请求缓存
+  max-http-header-size: 204800
+  servlet:
+    #context-path: /backend
+    session:
+      timeout: 4h # SESSION 过期时间
+
+#配置日志保存
+logging:
+  level:
+    root: info
+  file:
+    name: ./LogDir/app.log
+  logback:
+    rollingpolicy:
+      #日志保留天数
+      max-history: 7
+
+#配置swagger是否开启
+springfox:
+  documentation:
+    enabled: true
+    #页面路径前缀
+    swagger-ui:
+      base-url: '/pzj'
