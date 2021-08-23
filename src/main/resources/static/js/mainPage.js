@@ -4,12 +4,12 @@
  */
 let pageState = "common"
 
-function changeMainPage(uri){
-    hideFlash($("#mainFrame"),500)
+function changeMainPage(uri) {
+    hideFlash($("#mainFrame"), 500)
     setTimeout(function () {
-        $("#mainFrame").attr("src",uri)
-        showFlash($("#mainFrame"),500)
-    },500)
+        $("#mainFrame").attr("src", uri)
+        showFlash($("#mainFrame"), 500)
+    }, 500)
 
 }
 
@@ -23,4 +23,8 @@ function getPageState() {
 
 function callTopFrameRefresh() {
     $('#topFrame')[0].contentWindow.refreshLoginStatus()
+}
+
+function myAlert(type, msg, time) {
+    parent.myAlert(type, msg, time)
 }

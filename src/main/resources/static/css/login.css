@@ -14,12 +14,6 @@ body{
     animation: showItem .5s ease-in backwards;
     box-shadow: 0 0 1rem white;
 }
-#submitLoginBtn{
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    line-height: 3rem;
-}
 .inputDiv{
     margin: 1rem;
 }

@@ -21,3 +21,18 @@ function hideFlash(obj, ms) {
         obj.hide()
     }, ms);
 }
+
+function showBackground(obj, ms){
+    obj.css("animation", "showBackground " + ms + "ms ease-out")
+    obj.show()
+    setTimeout(function () {
+        obj.css('animation', '')
+    }, ms);
+}
+
+function hideAndDropBackground(obj, ms){
+    obj.css("animation", "hideBackground " + (ms + 10) + "ms ease-out")
+    setTimeout(function () {
+        obj.remove()
+    }, ms);
+}

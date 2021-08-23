@@ -16,15 +16,9 @@ body {
 
 #insertNew {
     margin: 1rem;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    line-height: 3rem;
-    /*防止元素被压缩*/
-    flex-shrink: 0;
 }
 
-.uriBtn{
+.uriBtn {
     margin-bottom: 1rem;
 }
 
@@ -44,24 +38,74 @@ img {
 .trDiv {
     display: flex;
 }
-#tableDiv{
-    margin: 1rem;
 
+#tableDiv {
+    margin: 1rem;
     overflow: auto;
 }
 
-#tableDiv > .trDiv:nth-child(odd) {
+.trDiv:nth-child(odd) {
     background-color: #FFCCCC;
+    transition: .5s;
 }
 
-#tableDiv > .trDiv:nth-child(even) {
+.trDiv:nth-child(even) {
     background-color: #ffEEEE;
+    transition: .5s;
 }
 
-.trDiv > .tdLeftDiv:nth-child(1) {
-    width: calc(100% - 10rem);
+.trDiv:hover {
+    background-color: #FF9999;
+    transition: .5s;
 }
 
-.trDiv > .tdLeftDiv:nth-child(2) {
-    width: 10rem;
+.tdLeftDiv {
+    width: calc(100% - 6rem);
+}
+
+.tdRightDiv {
+    width: 6rem;
+}
+
+.tdRightDiv > img:hover {
+    background-color: #ffEEEE;
+    transition: .5s;
+}
+
+#tableDiv img {
+    margin-top: 2px;
+}
+
+.tdRightDiv > img {
+    border-radius: .2rem;
+    margin-right: 0.5rem;
+    float: right;
+    cursor: url(/css/cur/pointer.cur), pointer;
+}
+
+span {
+    float: right;
+    margin-right: 1rem;
+}
+
+#_insert_alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem white inset;
+}
+
+#needLoad {
+    position: relative;
+    top: -15vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 1rem white;
 }

@@ -12,10 +12,6 @@
 #loginBtn,#adminBtn{
     margin-left: 1rem;
     position: relative;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    line-height: 3rem;
 }
 #showText{
     color: darkred;

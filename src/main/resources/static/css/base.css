@@ -22,6 +22,8 @@ div {
 a:hover,
 button:hover,
 select:hover,
+input:hover,
+label:hover,
 .btn {
     cursor: url(/css/cur/pointer.cur), pointer;
 }
@@ -69,14 +71,51 @@ select:hover,
     }
 }
 
+@keyframes showBackground {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes hideBackground {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes showAlert {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes hideAlert {
+    from {
+        transform: scaleY(1);
+    }
+    to {
+        transform: scaleY(0);
+    }
+}
+
 /*按钮样式*/
 .btn {
     background-color: rgba(205, 92, 92, 0.5);
     color: darkred;
     text-align: center;
     transition: .5s;
-    box-shadow: 0 0 1rem rgba(205, 92, 92, 1);
+    box-shadow: 0 0 1rem rgba(205, 92, 92, 0.5);
     border-radius: .5rem;
+    padding: 0.2rem;
 }
 
 .btn:hover {
@@ -92,16 +131,20 @@ select:hover,
 
 /*输入框样式*/
 input {
+    padding-left: 0.2rem;
     color: white;
     cursor: url(/css/cur/default.cur), default;
     background-color: RosyBrown;
     border: 0;
     font-size: large;
+    outline: rgba(255, 255, 255, 0) 0.15rem solid;
+    transition: 1s;
 }
 
 input:focus {
     font-size: large;
-    outline: white 0.15rem solid;
+    outline: rgba(255, 255, 255, 1) 0.15rem solid;
+    transition: 1s;
 }
 
 /*下拉框样式*/
@@ -155,3 +198,12 @@ td {
     margin: 0;
 }
 
+.circleBtn{
+    padding: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    line-height: 3rem;
+    /*防止元素被压缩*/
+    flex-shrink: 0;
+}
