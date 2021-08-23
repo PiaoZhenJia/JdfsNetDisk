@@ -20,7 +20,7 @@ spring:
       max-request-size: 1GB
 
 server:
-  port: 8066
+  port: 80
   #配置容器最高200M请求缓存
   max-http-header-size: 204800
   servlet:

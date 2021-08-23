@@ -1,20 +1,20 @@
-body{
+body {
     display: flex;
-    align-items:center;
-    justify-content:center;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
 
-#tableDiv{
+#outSideDiv {
     margin: auto;
     width: 90%;
     height: 90%;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 1rem white;
     border-radius: 1rem;
 }
 
-#toDesktop{
+#insertNew {
     margin: 1rem;
     width: 3rem;
     height: 3rem;
@@ -24,33 +24,44 @@ body{
     flex-shrink: 0;
 }
 
-table{
-    margin: 1rem auto;
-    width: inherit;
-    height: inherit;
+.uriBtn{
+    margin-bottom: 1rem;
 }
 
-table tbody {
-    display: block;
-    overflow-y: auto;
-    height: inherit;
-}
-
-img{
+img {
     width: 1.5rem;
     height: 1.5rem;
 }
-#uriLine{
+
+#uriLine {
     display: flex;
-    flex-direction: row;
-    height: 1.5rem;
+    /*flex-direction: row;*/
+    /*height: 1.5rem;*/
     margin: auto auto auto 0;
     flex-wrap: wrap;
 }
 
-tr>td:nth-child(1){
+.trDiv {
+    display: flex;
+}
+#tableDiv{
+    margin: 1rem;
+
+    overflow: auto;
+}
+
+#tableDiv > .trDiv:nth-child(odd) {
+    background-color: #FFCCCC;
+}
+
+#tableDiv > .trDiv:nth-child(even) {
+    background-color: #ffEEEE;
+}
+
+.trDiv > .tdLeftDiv:nth-child(1) {
     width: calc(100% - 10rem);
 }
-tr>td:nth-child(2){
+
+.trDiv > .tdLeftDiv:nth-child(2) {
     width: 10rem;
 }
