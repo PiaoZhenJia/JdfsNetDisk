@@ -1,15 +1,18 @@
 package com.company.jdfs.controller;
 
 import com.company.app.common.base.R;
+import com.company.app.common.security.Authority;
 import com.company.app.common.utils.FileUtil;
 import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.entity.FileAttribute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +29,10 @@ public class FileController {
 
     @ApiOperation("查看文件夹")
     @PostMapping("/select/{baseFolder}")
-    public R<FileAttribute> selectFolder(@PathVariable String baseFolder, @RequestBody String uri) {
+    public R<FileAttribute> selectFolder(HttpServletRequest request, @PathVariable String baseFolder, @RequestBody String uri) {
+        if (checkIfDirNeedLogin(request, baseFolder)) {
+            return new R<>(401, "请先登录");
+        }
         ArrayList<FileAttribute> result = new ArrayList<>();
         File folder = new File(switchBaseFolder(baseFolder) + uri);
         File[] files = folder.listFiles();
@@ -42,7 +48,10 @@ public class FileController {
 
     @ApiOperation("下载文件")
     @GetMapping("/download/{baseFolder}")
-    public void download(HttpServletResponse response, @PathVariable String baseFolder, String uri) throws IOException {
+    public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable String baseFolder, String uri) throws IOException {
+        if (checkIfDirNeedLogin(request, baseFolder)) {
+            return;
+        }
         File file = new File(switchBaseFolder(baseFolder) + uri);
         byte[] bytes = fileUtil.getByteFromFile(file);
         response.reset();
@@ -56,12 +65,13 @@ public class FileController {
         out.close();
     }
 
+    @Authority("user")
     @ApiOperation("新建文件(夹)")
     @GetMapping("/create")
     public R create(Boolean trueFolderFalseFile, String baseFolder, String uri, String name) throws IOException {
         File file = new File(switchBaseFolder(baseFolder) + uri + File.separator + name);
-        if (file.exists()){
-            return new R(500,"文件(夹)名称已经存在");
+        if (file.exists()) {
+            return new R(500, "文件(夹)名称已经存在");
         }
         if (trueFolderFalseFile) {
             file.mkdir();
@@ -87,4 +97,15 @@ public class FileController {
                 throw new IllegalStateException("Unexpected value: " + baseFolder);
         }
     }
+
+    private boolean checkIfDirNeedLogin(HttpServletRequest request, String baseFolder) {
+        if (switchBaseFolder(baseFolder).equals(JdfsConstant.COMMON_FILE_DIR)) {
+            return false;
+        }
+        if (StringUtils.isNotEmpty((String)request.getSession().getAttribute(JdfsConstant.SESSION_LOGIN_FLAG))) {
+            return false;
+        }
+        return true;
+    }
+
 }

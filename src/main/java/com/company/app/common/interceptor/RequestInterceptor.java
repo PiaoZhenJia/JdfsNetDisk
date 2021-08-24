@@ -67,6 +67,7 @@ public class RequestInterceptor implements HandlerInterceptor {
      * 返回请登录信息
      */
     private void askLogin(HttpServletResponse response, String message) throws IOException {
+        response.sendError(401);
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().println(message);

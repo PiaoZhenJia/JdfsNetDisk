@@ -3,9 +3,6 @@ let uri = "/"
 $(
     refreshUri(),
     refreshTable(),
-    $("#toDesktop").click(function () {
-        parent.changeMainPage("/page/desktop.html")
-    }),
     $("#insertNew").click(function () {
         insertInit()
     })
@@ -14,11 +11,11 @@ $(
 function insertInit() {
     let html = "<div id='_insert_alert'></div>"
     $("body").append(html)
-    showBackground($("#_insert_alert"),500)
+    showBackground($("#_insert_alert"), 500)
     $("#_insert_alert").load("/page/insidePage/insertPage.html #needLoad")
 }
 
-function submitInsert(){
+function submitInsert() {
     let choose = $("input[name='fileFolder']:checked").val();
     $.ajax({
         url: "/create",
@@ -26,17 +23,22 @@ function submitInsert(){
         data: {
             trueFolderFalseFile: choose == 0,
             baseFolder: parent.getPageState(),
-            uri:uri,
-            name:$("#inputName").val()
+            uri: uri,
+            name: $("#inputName").val()
         },
-        success: function (res){
+        success: function (res) {
             $("#inputName").val("")
             refreshTable()
+            parent.myAlert("success", res.message)
+        },
+        error: function (res) {
+            parent.myAlert("failed", "请先登录")
         }
     })
 }
-function cancelInsert(){
-    hideAndDropBackground($("#_insert_alert"),500)
+
+function cancelInsert() {
+    hideAndDropBackground($("#_insert_alert"), 500)
 }
 
 function resetUri(uriNew) {
@@ -62,6 +64,12 @@ function refreshTable() {
         contentType: 'application/json',
         data: uri,
         success: function (res) {
+            if (res.status == 401){
+                parent.myAlert("failed",res.message)
+                parent.callTopFrameRefresh()
+                let html = "需先登录才能浏览私人路径内容";
+                $("#tableDiv").html(html)
+            }
             let html = "";
             res.dataValue.forEach(e => {
                 let line = "<div class='trDiv'>"
@@ -134,4 +142,7 @@ function refreshUri() {
         }
     }
     $("#uriLine").html(html)
+    $("#toDesktop").click(function () {
+        parent.changeMainPage("/page/desktop.html")
+    })
 }

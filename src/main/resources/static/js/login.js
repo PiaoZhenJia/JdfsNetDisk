@@ -11,9 +11,9 @@ $(
                 if (res.status == 200) {
                     parent.changeMainPage("/page/desktop.html")
                     parent.callTopFrameRefresh()
-                    parent.myAlert("success",res.message)
+                    parent.myAlert("success", res.message)
                 } else {
-                    alert(res.message)
+                    parent.myAlert("failed", res.message)
                 }
             }
         })

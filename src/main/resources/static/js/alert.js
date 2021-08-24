@@ -22,6 +22,10 @@ function myAlert(type, msg, time) {
 }
 
 function success(msg, time) {
+    baseAlert(msg, time, "rgba(0,255,0,0.5)")
+}
+
+function baseAlert(msg, time, color) {
     let randomId = "alert_" + (++index)
     let html = "<div id='" + randomId + "' style='" +
         "position: absolute;" +
@@ -33,11 +37,11 @@ function success(msg, time) {
         "align-items: center;" +
         "justify-content: center;" +
         "background-color: white;" +
-        "box-shadow: 0 0 1rem white;"+
-        "transform-origin: center bottom;"+
+        "box-shadow: 0 0 5rem " + color + ";" +
+        "transform-origin: center bottom;" +
         // "z-index: 9999;"+
         "'>"
-    html += "<h2>"+ msg +"</h2>"
+    html += "<h2>" + msg + "</h2>"
     html += "</div>"
     $("body").append(html)
     showAlert(randomId)
@@ -47,27 +51,27 @@ function success(msg, time) {
 }
 
 function warning(msg, time) {
-
+    baseAlert(msg, time, "rgba(255,255,0,0.5)")
 }
 
 function failed(msg, time) {
-
+    baseAlert(msg, time, "rgba(255,0,0,0.5)")
 }
 
 function ask(msg, time) {
     return undefined;
 }
 
-function showAlert(id){
-    $("#"+id).css("animation", "showAlert " + 450 + "ms ease-out")
+function showAlert(id) {
+    $("#" + id).css("animation", "showAlert " + 450 + "ms ease-out")
     setTimeout(function () {
-        $("#"+id).css("animation", "")
+        $("#" + id).css("animation", "")
     }, 450);
 }
 
-function removeAlert(id){
-    $("#"+id).css("animation", "hideAlert " + 450 + "ms ease-out")
+function removeAlert(id) {
+    $("#" + id).css("animation", "hideAlert " + 450 + "ms ease-out")
     setTimeout(function () {
-        $("#"+id).remove()
+        $("#" + id).remove()
     }, 450);
 }
