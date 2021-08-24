@@ -32,7 +32,7 @@ function submitInsert() {
             parent.myAlert("success", res.message)
         },
         error: function (res) {
-            parent.myAlert("failed", "请先登录")
+            parent.myAlert("error", "请先登录")
         }
     })
 }
@@ -65,7 +65,7 @@ function refreshTable() {
         data: uri,
         success: function (res) {
             if (res.status == 401){
-                parent.myAlert("failed",res.message)
+                parent.myAlert("error",res.message)
                 parent.callTopFrameRefresh()
                 let html = "需先登录才能浏览私人路径内容";
                 $("#tableDiv").html(html)

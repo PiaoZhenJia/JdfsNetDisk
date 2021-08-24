@@ -1,7 +1,7 @@
 let index = 0
 
 function myAlert(type, msg, time) {
-    if (time == undefined || time < 1000) {
+    if (time != -1 && (time == undefined || time < 1000)) {
         time = 2000
     }
     switch (type) {
@@ -11,11 +11,9 @@ function myAlert(type, msg, time) {
         case "warning":
             warning(msg, time)
             break;
-        case "failed":
-            failed(msg, time)
+        case "error":
+            error(msg, time)
             break;
-        case "ask":
-            return ask(msg, time)
         default:
             alert("unknown alert type !!!!!!!")
     }
@@ -45,6 +43,9 @@ function baseAlert(msg, time, color) {
     html += "</div>"
     $("body").append(html)
     showAlert(randomId)
+    if (time == -1) {
+        return randomId
+    }
     setTimeout(function () {
         removeAlert(randomId)
     }, time)
@@ -54,12 +55,8 @@ function warning(msg, time) {
     baseAlert(msg, time, "rgba(255,255,0,0.5)")
 }
 
-function failed(msg, time) {
+function error(msg, time) {
     baseAlert(msg, time, "rgba(255,0,0,0.5)")
-}
-
-function ask(msg, time) {
-    return undefined;
 }
 
 function showAlert(id) {

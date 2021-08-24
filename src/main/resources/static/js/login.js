@@ -13,7 +13,7 @@ $(
                     parent.callTopFrameRefresh()
                     parent.myAlert("success", res.message)
                 } else {
-                    parent.myAlert("failed", res.message)
+                    parent.myAlert("error", res.message)
                 }
             }
         })
