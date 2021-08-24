@@ -2,6 +2,7 @@
 <html lang="zh">
 
 <head>
+    <!--@author 朴朴朴 https://github.com/PiaoZhenJia-->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>朴朴个人云盘</title>
     <link rel="stylesheet" href="/css/base.css">
@@ -9,28 +10,28 @@
 </head>
 
 <body>
-    <iframe src="/page/mainPage.html" frameborder="no">
+<iframe src="/page/mainPage.html" frameborder="no">
 
-    </iframe>
+</iframe>
 
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-            list-style-type: none;
-        }
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
 
-        a,
-        img {
-            border: 0;
-        }
+    a,
+    img {
+        border: 0;
+    }
 
-        body {
-            font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
-        }
-    </style>
-    <canvas id="sakura"></canvas>
-    <script id="sakura_point_vsh" type="x-shader/x_vertex">
+    body {
+        font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
+    }
+</style>
+<canvas id="sakura"></canvas>
+<script id="sakura_point_vsh" type="x-shader/x_vertex">
 uniform mat4 uProjection;
 uniform mat4 uModelview;
 uniform vec3 uResolution;
@@ -123,8 +124,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="sakura_point_fsh" type="x-shader/x_fragment">
+<script id="sakura_point_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -197,8 +199,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="fx_common_vsh" type="x-shader/x_vertex">
+<script id="fx_common_vsh" type="x-shader/x_vertex">
 uniform vec3 uResolution;
 attribute vec2 aPosition;
 
@@ -212,8 +215,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="bg_fsh" type="x-shader/x_fragment">
+<script id="bg_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -234,8 +238,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="fx_brightbuf_fsh" type="x-shader/x_fragment">
+<script id="fx_brightbuf_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -252,8 +257,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="fx_dirblur_r4_fsh" type="x-shader/x_fragment">
+<script id="fx_dirblur_r4_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -275,8 +281,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="fx_common_fsh" type="x-shader/x_fragment">
+<script id="fx_common_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -292,8 +299,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="pp_final_vsh" type="x-shader/x_vertex">
+<script id="pp_final_vsh" type="x-shader/x_vertex">
 uniform vec3 uResolution;
 attribute vec2 aPosition;
 varying vec2 texCoord;
@@ -305,8 +313,9 @@ void main(void) {
 }
 
 
+
 </script>
-    <script id="pp_final_fsh" type="x-shader/x_fragment">
+<script id="pp_final_fsh" type="x-shader/x_fragment">
 #ifdef GL_ES
 //precision mediump float;
 precision highp float;
@@ -329,11 +338,12 @@ void main(void) {
 }
 
 
+
 </script>
-    <script src="/js/jquery-3.5.1.js"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/alert.js"></script>
-    <script src="/js/flash.js"></script>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/flash.js"></script>
 
 </body>
 

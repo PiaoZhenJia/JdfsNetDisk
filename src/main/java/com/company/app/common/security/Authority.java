@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义权限注解
+ *
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

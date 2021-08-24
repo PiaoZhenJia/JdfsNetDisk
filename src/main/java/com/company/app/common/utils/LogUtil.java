@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class LogUtil {
 

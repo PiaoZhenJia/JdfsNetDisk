@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class RequestInterceptor implements HandlerInterceptor {
 

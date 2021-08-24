@@ -7,6 +7,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PreDestroy;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @EnableSwagger2//swagger 接口文档
 @SpringBootApplication(scanBasePackages = "com.company.**")//扫包层级
 public class MyApplication {

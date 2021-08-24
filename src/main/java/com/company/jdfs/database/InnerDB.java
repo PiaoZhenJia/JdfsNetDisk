@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Data
 public class InnerDB implements Serializable {
 
@@ -13,19 +16,28 @@ public class InnerDB implements Serializable {
 
     private HashSet<User> users;
 
+    /**
+     * 单例模式-私有化构造器
+     */
     private InnerDB() {
     }
 
-    protected static InnerDB getInstance(){
-        if (null == db){
+    /**
+     * 单例模式-获取数据库对象
+     * protected保证只有DBUtil能访问
+     */
+    protected static InnerDB getInstance() {
+        if (null == db) {
             db = new InnerDB();
         }
         return db;
     }
 
-    protected static void setDb(InnerDB dbInstance){
+    /**
+     * 设置数据库对象 用于反序列化
+     */
+    protected static void setDb(InnerDB dbInstance) {
         db = dbInstance;
     }
-
 
 }

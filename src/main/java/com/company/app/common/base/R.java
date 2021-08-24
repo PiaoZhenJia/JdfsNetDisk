@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @NoArgsConstructor
 @Data
 @ApiModel("通用返回结果对象")

@@ -83,6 +83,9 @@ img {
     cursor: url(/css/cur/pointer.cur), pointer;
 }
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 span {
     float: right;
     margin-right: 1rem;

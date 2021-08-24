@@ -1,25 +1,32 @@
-body{
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
+body {
     display: flex;
-    align-items:center;
-    justify-content:center;
+    align-items: center;
+    justify-content: center;
     top: -15vh;
 }
-#outSide{
+
+#outSide {
     width: fit-content;
     height: fit-content;
-    background-color: rgba(255,255,255,0.5);
-    border-radius: 1rem ;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 1rem;
     padding: 1rem;
     margin: auto;
     animation: showItem .5s ease-in backwards;
     box-shadow: 0 0 1rem white;
 }
-.inputDiv{
+
+.inputDiv {
     margin: 1rem;
 }
-input{
+
+input {
     float: right;
 }
-#submitLoginBtn{
+
+#submitLoginBtn {
     margin: 0 auto;
 }

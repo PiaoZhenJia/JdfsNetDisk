@@ -2,6 +2,9 @@ package com.company.app.common.utils;
 
 import java.util.UUID;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 public class UUIDUtil {
     /**
      * 生成一个32位无横杠的UUID

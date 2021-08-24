@@ -2,6 +2,9 @@ package com.company.jdfs;
 
 import java.io.File;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 public class JdfsConstant {
     /**
      * 项目外置文件夹路径

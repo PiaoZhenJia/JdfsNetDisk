@@ -7,6 +7,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class AfterApplicationStart implements ApplicationRunner {
 

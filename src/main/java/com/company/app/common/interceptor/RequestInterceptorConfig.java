@@ -8,12 +8,12 @@ import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * 配置请求拦截器
- *
  * 在使用拦截器时，在配置拦截器的时候，由于在 Spring Boot 2.0 之前，我们都是直接继承 WebMvcConfigurerAdapter 类，
  * 然后重写 addInterceptors 方法来实现拦截器的配置。但是在 Spring Boot 2.0 之后，该方法已经被废弃了（当然，也可以继续用），
  * 取而代之的是 WebMvcConfigurationSupport 方法，如下
+ *
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
  */
-
 @Configuration
 public class RequestInterceptorConfig implements WebMvcConfigurer {
 
@@ -41,10 +41,12 @@ public class RequestInterceptorConfig implements WebMvcConfigurer {
         configurer.registerCallableInterceptors(timeoutInterceptor());
         configurer.setTaskExecutor(threadPoolTaskExecutor());
     }
+
     @Bean
     public TimeoutCallableProcessingInterceptor timeoutInterceptor() {
         return new TimeoutCallableProcessingInterceptor();
     }
+
     @Bean
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor t = new ThreadPoolTaskExecutor();

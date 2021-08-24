@@ -1,4 +1,10 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 $(
+    /**
+     * 登录按钮监听
+     */
     $("#submitLoginBtn").click(function () {
         $.ajax({
             url: "/api/user/login",

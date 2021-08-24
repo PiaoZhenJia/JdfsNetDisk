@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class SerializableUtil {
 

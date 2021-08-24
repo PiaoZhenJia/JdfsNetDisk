@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.util.HashSet;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class JdfsApplicationStart implements ApplicationRunner {
 
@@ -52,7 +55,7 @@ public class JdfsApplicationStart implements ApplicationRunner {
     private void dbInit(boolean exist) throws IOException {
         if (exist) {
             try {
-                dbUtil.deserializationDB();
+                dbUtil.deserializeDB();
                 logUtil.info(this, "数据文件反序列化成功");
                 return;
             } catch (ClassNotFoundException e) {
@@ -64,7 +67,7 @@ public class JdfsApplicationStart implements ApplicationRunner {
         InnerDB db = dbUtil.getInstance();
         db.setUsers(new HashSet<>());
         db.getUsers().add(new User("admin", md5Util.createMd5("admin",JdfsConstant.MD5_SALT), Identity.ADMIN));
-        dbUtil.serializationDB();
+        dbUtil.serializeDB();
         logUtil.info(this, "数据文件已配置为默认");
     }
 

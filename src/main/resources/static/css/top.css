@@ -1,25 +1,32 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 .topDiv {
     height: 100%;
     position: relative;
-    background-color: rgba(255,255,255,0.5);
-    border-radius:  0 0 50% 50% ;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0 0 50% 50%;
 }
-#loginDiv{
+
+#loginDiv {
     position: absolute;
     display: flex;
     top: 1rem;
 }
-#loginBtn,#adminBtn{
+
+#loginBtn, #adminBtn {
     margin-left: 1rem;
     position: relative;
 }
-#showText{
+
+#showText {
     color: darkred;
     top: .5rem;
     position: relative;
     text-align: center;
 }
-#userName{
+
+#userName {
     line-height: 3rem;
     margin-left: 1rem;
 }

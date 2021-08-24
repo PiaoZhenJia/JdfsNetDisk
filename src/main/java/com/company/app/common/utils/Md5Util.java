@@ -4,8 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
+
 /**
- * MD5工具类
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
  */
 @Component
 public class Md5Util {

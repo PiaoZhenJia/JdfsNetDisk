@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Api(tags = "文件控制器")
 @RestController("/file")
 public class FileController {
@@ -36,11 +38,11 @@ public class FileController {
         ArrayList<FileAttribute> result = new ArrayList<>();
         File folder = new File(switchBaseFolder(baseFolder) + uri);
         File[] files = folder.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
-                result.add(new FileAttribute(true, files[i].getName(), files[i].list().length));
-            } else if (files[i].isFile()) {
-                result.add(new FileAttribute(false, files[i].getName(), files[i].length()));
+        for (File file : files) {
+            if (file.isDirectory()) {
+                result.add(new FileAttribute(true, file.getName(), file.list().length));
+            } else if (file.isFile()) {
+                result.add(new FileAttribute(false, file.getName(), file.length()));
             }
         }
         return new R().setDataValue(result);
@@ -85,7 +87,6 @@ public class FileController {
      * 将前端baseFolder转换为后端路径
      *
      * @param baseFolder 前端对公、私有的定义名称
-     * @return
      */
     private String switchBaseFolder(String baseFolder) {
         switch (baseFolder) {
@@ -98,14 +99,14 @@ public class FileController {
         }
     }
 
+    /**
+     * 检查要访问的路径是否需要登录权限
+     */
     private boolean checkIfDirNeedLogin(HttpServletRequest request, String baseFolder) {
         if (switchBaseFolder(baseFolder).equals(JdfsConstant.COMMON_FILE_DIR)) {
             return false;
         }
-        if (StringUtils.isNotEmpty((String)request.getSession().getAttribute(JdfsConstant.SESSION_LOGIN_FLAG))) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isNotEmpty((String) request.getSession().getAttribute(JdfsConstant.SESSION_LOGIN_FLAG));
     }
 
 }

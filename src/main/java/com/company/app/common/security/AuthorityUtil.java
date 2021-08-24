@@ -8,6 +8,9 @@ import org.springframework.web.method.HandlerMethod;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Component
 public class AuthorityUtil {
 

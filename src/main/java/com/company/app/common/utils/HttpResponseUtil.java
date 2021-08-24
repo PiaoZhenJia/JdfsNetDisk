@@ -3,6 +3,9 @@ package com.company.app.common.utils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 public class HttpResponseUtil {
 
     /**

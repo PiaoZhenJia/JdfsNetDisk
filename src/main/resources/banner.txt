@@ -1,4 +1,4 @@
 Spring Boot version is ${spring-boot.version}
 ${AnsiColor.BRIGHT_YELLOW}Welcome to my project !
-Build by PiaoZhenJia : 0 warning(s), 0 error(s).
+Build by @author PiaoZhenJia : 0 warning(s), 0 error(s).
 ${AnsiColor.BLACK}

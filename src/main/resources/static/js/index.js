@@ -1,4 +1,7 @@
-// Utilities
+/**
+ * 这个页面的内容是抄的，用于动态背景
+ * @type {{}}
+ */
 var Vector3 = {};
 var Matrix44 = {};
 Vector3.create = function(x, y, z) {

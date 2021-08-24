@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
 @Service
 public class LocalRolesServiceImpl implements LocalRolesService {
     @Override

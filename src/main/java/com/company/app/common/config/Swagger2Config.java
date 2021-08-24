@@ -15,6 +15,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * Swagger2 配置类
  * http://localhost:8000/backend/swagger-ui/
  * 在这个版本中 上传文件时需使用@RequestPart注解
+ *
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
  */
 @Configuration
 @EnableSwagger2
