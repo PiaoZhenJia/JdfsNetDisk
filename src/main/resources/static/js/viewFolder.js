@@ -11,24 +11,28 @@ $(
     refreshUri(),
     refreshTable(),
     $("#insertNew").click(function () {
-        insertInit()
+        innerPageInit()
+        $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad")
     })
 )
 
 /**
- * 新建按钮点击事件:初始化弹窗
+ * 背景变为深色并提供弹性盒子div
  */
-function insertInit() {
-    let html = "<div id='_insert_alert'></div>"
+function innerPageInit() {
+    let html = "<div id='_inner_page_bg'></div>"
     $("body").append(html)
-    showBackground($("#_insert_alert"), 500)
-    $("#_insert_alert").load("/page/insidePage/insertPage.html #needLoad")
+    showBackground($("#_inner_page_bg"), 500)
 }
 
 /**
  * 新建弹窗提交按钮
  */
 function submitInsert() {
+    if ($("#inputName").val() == '') {
+        parent.myAlert("warning", "名称不能为空")
+        return
+    }
     let choose = $("input[name='fileFolder']:checked").val();
     $.ajax({
         url: "/create",
@@ -40,6 +44,10 @@ function submitInsert() {
             name: $("#inputName").val()
         },
         success: function (res) {
+            if (res.status != 200) {
+                parent.myAlert("error", res.message, 3000)
+                return
+            }
             $("#inputName").val("")
             refreshTable()
             parent.myAlert("success", res.message)
@@ -51,10 +59,10 @@ function submitInsert() {
 }
 
 /**
- * 新建弹窗取消按钮
+ * 关闭子页面并删除其html
  */
-function cancelInsert() {
-    hideAndDropBackground($("#_insert_alert"), 500)
+function cancelInnerPage() {
+    hideAndDropBackground($("#_inner_page_bg"), 500)
 }
 
 /**
@@ -132,9 +140,9 @@ function refreshTable() {
                 line += "</div>"
                 //右侧部分
                 line += "<div class='tdRightDiv' >"
-                line += "<img src='/ico/delete.png' title='删除文件'>"
-                line += "<img src='/ico/edit.png' title='修改名称'>"
-                line += "<img src='/ico/download.png' title='高级下载'>"
+                line += "<img src='/ico/delete.png' title='删除文件' onclick='deleteCurrent(\"" + e.name + "\")'>"
+                line += "<img src='/ico/edit.png' title='修改名称' onclick='renameCurrent(\"" + e.name + "\")'>"
+                line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
                 line += "</div>"
                 line += "</div>"
                 html += line
@@ -154,15 +162,84 @@ function refreshTable() {
                 line += "</div>"
                 //右侧部分
                 line += "<div class='tdRightDiv' >"
-                line += "<img src='/ico/delete.png' title='删除文件'>"
-                line += "<img src='/ico/edit.png' title='修改名称'>"
-                line += "<img src='/ico/download.png' title='高级下载'>"
+                line += "<img src='/ico/delete.png' title='删除文件' onclick='deleteCurrent(\"" + e.name + "\")'>"
+                line += "<img src='/ico/edit.png' title='修改名称' onclick='renameCurrent(\"" + e.name + "\")'>"
+                line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
                 line += "</div>"
                 line += "</div>"
                 html += line
             })
             $("#tableDiv").html(html)
             refreshTableHeight()
+        }
+    })
+}
+
+/**
+ * 下载按钮点击事件
+ */
+function downloadCurrent(name) {
+    //"/download/" + parent.getPageState() + "?uri=" + uri + name
+    document.execCommand( "SaveAs")
+}
+
+/**
+ * 删除按钮点击事件
+ */
+function deleteCurrent(name) {
+    if (!confirm("确定要删除吗")) {
+        return
+    }
+    $.ajax({
+        url: "/delete",
+        data: {
+            baseFolder: parent.getPageState(),
+            uri: uri + name
+        },
+        success: function (res) {
+            parent.myAlert("success", res.message)
+            refreshTable()
+        },
+        error: function (res) {
+            parent.myAlert("error", "请先登录")
+        }
+    })
+}
+
+/**
+ * 重命名按钮点击事件
+ */
+function renameCurrent(name) {
+    innerPageInit()
+    $("#_inner_page_bg").load("/page/insidePage/renamePage.html #needLoad", function () {
+        $("#oldName").val(name)
+        $("#newName").val(name)
+        $("#newName").focus()
+    })
+}
+
+/**
+ * 重命名提交
+ */
+function submitRename() {
+    let oldName = $("#oldName").val()
+    let newName = $("#newName").val()
+    $.ajax({
+        url: "/rename",
+        method: "get",
+        data: {
+            baseFolder: parent.getPageState(),
+            uri: uri,
+            oldName: oldName,
+            newName: newName
+        },
+        success: function (res) {
+            parent.myAlert("success", res.message)
+            refreshTable()
+            cancelInnerPage()
+        },
+        error: function () {
+            parent.myAlert("error", "请先登录")
         }
     })
 }

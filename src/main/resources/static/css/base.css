@@ -150,6 +150,12 @@ input:focus {
     transition: 1s;
 }
 
+input[type="text"]:disabled
+{
+    background-color: gray;
+    cursor: url(/css/cur/default.cur), default;
+}
+
 /*下拉框样式*/
 select {
     height: 1.8rem;

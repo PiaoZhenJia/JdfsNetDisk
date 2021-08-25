@@ -3,6 +3,7 @@ package com.company.jdfs.controller;
 import com.company.app.common.base.R;
 import com.company.app.common.security.Authority;
 import com.company.app.common.utils.FileUtil;
+import com.company.app.common.utils.LogUtil;
 import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.entity.FileAttribute;
 import io.swagger.annotations.Api;
@@ -28,21 +29,29 @@ public class FileController {
 
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private LogUtil logUtil;
 
     @ApiOperation("查看文件夹")
     @PostMapping("/select/{baseFolder}")
     public R<FileAttribute> selectFolder(HttpServletRequest request, @PathVariable String baseFolder, @RequestBody String uri) {
+        if (checkIfDirectoryTraversal(uri)) {
+            logUtil.warn(this, "尝试对路径穿越(select):" + uri);
+            return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
+        }
         if (checkIfDirNeedLogin(request, baseFolder)) {
             return new R<>(401, "请先登录");
         }
         ArrayList<FileAttribute> result = new ArrayList<>();
         File folder = new File(switchBaseFolder(baseFolder) + uri);
         File[] files = folder.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                result.add(new FileAttribute(true, file.getName(), file.list().length));
-            } else if (file.isFile()) {
-                result.add(new FileAttribute(false, file.getName(), file.length()));
+        if (null != files && files.length > 0) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    result.add(new FileAttribute(true, file.getName(), file.list().length));
+                } else if (file.isFile()) {
+                    result.add(new FileAttribute(false, file.getName(), file.length()));
+                }
             }
         }
         return new R().setDataValue(result);
@@ -51,6 +60,10 @@ public class FileController {
     @ApiOperation("下载文件")
     @GetMapping("/download/{baseFolder}")
     public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable String baseFolder, String uri) throws IOException {
+        if (checkIfDirectoryTraversal(uri)) {
+            logUtil.warn(this, "尝试对路径穿越(download):" + uri);
+            return;
+        }
         if (checkIfDirNeedLogin(request, baseFolder)) {
             return;
         }
@@ -70,18 +83,55 @@ public class FileController {
     @Authority("user")
     @ApiOperation("新建文件(夹)")
     @GetMapping("/create")
-    public R create(Boolean trueFolderFalseFile, String baseFolder, String uri, String name) throws IOException {
-        File file = new File(switchBaseFolder(baseFolder) + uri + File.separator + name);
-        if (file.exists()) {
-            return new R(500, "文件(夹)名称已经存在");
+    public R create(Boolean trueFolderFalseFile, String baseFolder, String uri, String name) {
+        if (checkIfDirectoryTraversal(uri + name)) {
+            logUtil.warn(this, "尝试对路径穿越(create):" + uri);
+            return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
         }
-        if (trueFolderFalseFile) {
-            file.mkdir();
-        } else {
-            file.createNewFile();
+        try {
+            File file = new File(switchBaseFolder(baseFolder) + uri + File.separator + name);
+            if (file.exists()) {
+                return new R(500, "文件(夹)名称已经存在");
+            }
+            if (trueFolderFalseFile) {
+                file.mkdir();
+            } else {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            return new R(500, "文件名或目录名语法不正确 必须输入合法的路径名称");
         }
         return new R("新建成功");
     }
+
+    @Authority("user")
+    @ApiOperation("删除文件(夹)")
+    @GetMapping("/delete")
+    public R delete(String baseFolder, String uri) {
+        if (checkIfDirectoryTraversal(uri)) {
+            logUtil.warn(this, "尝试对路径穿越(delete):" + uri);
+            return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
+        }
+        File file = new File(switchBaseFolder(baseFolder) + uri);
+        file.delete();
+        return new R("文件(夹)删除成功");
+    }
+
+    @Authority("user")
+    @ApiOperation("修改文件(夹)名称")
+    @GetMapping("/rename")
+    public R rename(String baseFolder, String uri, String oldName, String newName) {
+        if (checkIfDirectoryTraversal(uri + oldName) || checkIfDirectoryTraversal(newName)) {
+            logUtil.warn(this, "尝试对路径穿越(rename):" + uri);
+            return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
+        }
+        File file = new File(switchBaseFolder(baseFolder) + uri + oldName);
+        file.renameTo(new File(switchBaseFolder(baseFolder) + uri + newName));
+        System.out.println(new File(switchBaseFolder(baseFolder) + uri + oldName).getPath());
+        System.out.println(new File(switchBaseFolder(baseFolder) + uri + newName).getPath());
+        return new R("修改成功");
+    }
+
 
     /**
      * 将前端baseFolder转换为后端路径
@@ -107,6 +157,15 @@ public class FileController {
             return false;
         }
         return !StringUtils.isNotEmpty((String) request.getSession().getAttribute(JdfsConstant.SESSION_LOGIN_FLAG));
+    }
+
+    /**
+     * 校验前端输入的路径 谨防目录穿越漏洞的利用
+     */
+    private boolean checkIfDirectoryTraversal(String uri) {
+        int t1 = uri.indexOf("../");//通过正斜杠穿越
+        int t2 = uri.indexOf("..\\");//通过反斜杠穿越
+        return t1 > -1 || t2 > -1;
     }
 
 }

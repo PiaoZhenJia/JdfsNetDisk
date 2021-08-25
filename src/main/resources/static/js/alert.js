@@ -90,6 +90,7 @@ function showAlert(id) {
 function removeAlert(id) {
     $("#" + id).css("animation", "hideAlert " + 450 + "ms ease-out")
     setTimeout(function () {
+        $("#" + id).hide()
         $("#" + id).remove()
-    }, 450);
+    }, 440);
 }
