@@ -12,7 +12,9 @@ $(
     refreshTable(),
     $("#insertNew").click(function () {
         innerPageInit()
-        $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad")
+        $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad",function (){
+            showFlash($("#needLoad"),1000)
+        })
     })
 )
 
@@ -35,7 +37,7 @@ function submitInsert() {
     }
     let choose = $("input[name='fileFolder']:checked").val();
     $.ajax({
-        url: "/create",
+        url: "/api/file/create",
         method: "get",
         data: {
             trueFolderFalseFile: choose == 0,
@@ -62,7 +64,8 @@ function submitInsert() {
  * 关闭子页面并删除其html
  */
 function cancelInnerPage() {
-    hideAndDropBackground($("#_inner_page_bg"), 500)
+    hideFlash($("#needLoad"),500)
+    hideAndDropBackground($("#_inner_page_bg"), 1000)
 }
 
 /**
@@ -98,7 +101,7 @@ function clickFile(file) {
  */
 function refreshTable() {
     $.ajax({
-        url: "/select/" + parent.getPageState(),
+        url: "/api/file/select/" + parent.getPageState(),
         method: "post",
         contentType: 'application/json',
         data: uri,
@@ -142,7 +145,7 @@ function refreshTable() {
                 line += "<div class='tdRightDiv' >"
                 line += "<img src='/ico/delete.png' title='删除文件' onclick='deleteCurrent(\"" + e.name + "\")'>"
                 line += "<img src='/ico/edit.png' title='修改名称' onclick='renameCurrent(\"" + e.name + "\")'>"
-                line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
+                // line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
                 line += "</div>"
                 line += "</div>"
                 html += line
@@ -164,7 +167,8 @@ function refreshTable() {
                 line += "<div class='tdRightDiv' >"
                 line += "<img src='/ico/delete.png' title='删除文件' onclick='deleteCurrent(\"" + e.name + "\")'>"
                 line += "<img src='/ico/edit.png' title='修改名称' onclick='renameCurrent(\"" + e.name + "\")'>"
-                line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
+                // line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
+                line += "<img src='/ico/share.png' title='分享文件' onclick='shareCurrent(\"" + e.name + "\")'>"
                 line += "</div>"
                 line += "</div>"
                 html += line
@@ -176,14 +180,6 @@ function refreshTable() {
 }
 
 /**
- * 下载按钮点击事件
- */
-function downloadCurrent(name) {
-    //"/download/" + parent.getPageState() + "?uri=" + uri + name
-    document.execCommand( "SaveAs")
-}
-
-/**
  * 删除按钮点击事件
  */
 function deleteCurrent(name) {
@@ -191,7 +187,7 @@ function deleteCurrent(name) {
         return
     }
     $.ajax({
-        url: "/delete",
+        url: "/api/file/delete",
         data: {
             baseFolder: parent.getPageState(),
             uri: uri + name
@@ -212,10 +208,56 @@ function deleteCurrent(name) {
 function renameCurrent(name) {
     innerPageInit()
     $("#_inner_page_bg").load("/page/insidePage/renamePage.html #needLoad", function () {
+        showFlash($("#needLoad"),1000)
         $("#oldName").val(name)
         $("#newName").val(name)
         $("#newName").focus()
     })
+}
+
+/**
+ * 分享文件按钮点击事件
+ */
+function shareCurrent(name) {//shareId
+    $.ajax({
+        url: "/api/file/share",
+        data: {
+            baseFolder: parent.getPageState(),
+            uri: uri + name
+        },
+        success: function (res) {
+            if (res.status != 200) {
+                parent.myAlert("error", res.message)
+                return
+            } else {
+                innerPageInit()
+                $("#_inner_page_bg").load("/page/insidePage/sharePage.html #needLoad", function () {
+                    showFlash($("#needLoad"),1000)
+                    let text = "我使用朴朴个人云盘分享了: [ " + name + " ]\n"
+                    text += "提取链接: [ " + window.location.href + "?share_id=" + res.message + " ]\n"
+                    text += "提取码: [ " + res.message + " ]\n"
+                    $("#shareName").text("分享文件:" + name)
+                    $("#shareId").val(text)
+                    parent.myAlert("success", "文件已分享")
+                })
+            }
+        },
+        error: function (res) {
+            parent.myAlert("error", "请先登录")
+        }
+    })
+}
+
+/**
+ * 分享文件复制分享码
+ */
+function copyShareCode() {
+    let code = $("#shareId").val()
+    $("#shareId").select()
+    if (document.execCommand('copy')) {
+        document.execCommand('copy');
+        parent.myAlert("success", "已复制内容到剪切板")
+    }
 }
 
 /**
@@ -225,7 +267,7 @@ function submitRename() {
     let oldName = $("#oldName").val()
     let newName = $("#newName").val()
     $.ajax({
-        url: "/rename",
+        url: "/api/file/rename",
         method: "get",
         data: {
             baseFolder: parent.getPageState(),

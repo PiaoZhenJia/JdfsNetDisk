@@ -26,6 +26,7 @@ a:hover,
 button:hover,
 select:hover,
 input:hover,
+textarea:hover,
 label:hover,
 .btn {
     cursor: url(/css/cur/pointer.cur), pointer;
@@ -133,7 +134,7 @@ label:hover,
 }
 
 /*输入框样式*/
-input {
+input,textarea {
     padding-left: 0.2rem;
     color: white;
     cursor: url(/css/cur/default.cur), default;
@@ -144,7 +145,7 @@ input {
     transition: 1s;
 }
 
-input:focus {
+input:focus,textarea:focus {
     font-size: large;
     outline: rgba(255, 255, 255, 1) 0.15rem solid;
     transition: 1s;

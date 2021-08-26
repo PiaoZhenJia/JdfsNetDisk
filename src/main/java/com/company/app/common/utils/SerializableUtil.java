@@ -16,7 +16,7 @@ public class SerializableUtil {
         oos.close();
     }
 
-    public Object fileToObject(String filePath) throws IOException, ClassNotFoundException {
+    public Object fileToObject(String filePath) throws IOException, ClassNotFoundException, RuntimeException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filePath)));
         Object obj = ois.readObject();
         return obj;

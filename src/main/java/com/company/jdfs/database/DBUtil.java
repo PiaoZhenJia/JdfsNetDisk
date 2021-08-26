@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -43,7 +44,7 @@ public class DBUtil {
     /**
      * 从磁盘序列化文件加载数据库
      */
-    public void deserializeDB() throws IOException, ClassNotFoundException {
+    public void deserializeDB() throws IOException, ClassNotFoundException, RuntimeException {
         InnerDB.setDb((InnerDB) serializableUtil.fileToObject(JdfsConstant.JDFS_DB));
     }
 
@@ -58,6 +59,7 @@ public class DBUtil {
 
     /**
      * 检测用户名是否存在
+     *
      * @return 有重名返回false 无重名返回true
      */
     public boolean checkNameIsNotExist(String userName) {
@@ -101,5 +103,31 @@ public class DBUtil {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 判断是否文件已经被分享
+     * @param shareUri 文件路径
+     * @return 如果已经被分享 返回已有分享码 否则返回null
+     */
+    public String isSharedUri(String shareUri) {
+        HashMap<String, String> share = InnerDB.getInstance().getShare();
+        String[] result = new String[1];
+        if (share.containsValue(shareUri)) {
+            share.forEach((k, v) -> {
+                if (v.equals(shareUri)) {
+                    result[0] = k;
+                }
+            });
+        }
+        return result[0];
+    }
+
+    /**
+     * 将分享码保存至数据库
+     */
+    public void insertShare(String shareId, String shareUri) {
+        InnerDB.getInstance().getShare().put(shareId, shareUri);
+        serializeDB();
     }
 }

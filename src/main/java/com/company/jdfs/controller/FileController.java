@@ -4,7 +4,9 @@ import com.company.app.common.base.R;
 import com.company.app.common.security.Authority;
 import com.company.app.common.utils.FileUtil;
 import com.company.app.common.utils.LogUtil;
+import com.company.app.common.utils.UUIDUtil;
 import com.company.jdfs.JdfsConstant;
+import com.company.jdfs.database.DBUtil;
 import com.company.jdfs.entity.FileAttribute;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,19 +26,23 @@ import java.util.ArrayList;
  * @author 朴朴朴 https://github.com/PiaoZhenJia
  */
 @Api(tags = "文件控制器")
-@RestController("/file")
+@RequestMapping("/api/file")
+@RestController
 public class FileController {
 
     @Autowired
     private FileUtil fileUtil;
     @Autowired
     private LogUtil logUtil;
+    @Autowired
+    private DBUtil dbUtil;
+    @Autowired
+    private UUIDUtil uuidUtil;
 
     @ApiOperation("查看文件夹")
     @PostMapping("/select/{baseFolder}")
     public R<FileAttribute> selectFolder(HttpServletRequest request, @PathVariable String baseFolder, @RequestBody String uri) {
         if (checkIfDirectoryTraversal(uri)) {
-            logUtil.warn(this, "尝试对路径穿越(select):" + uri);
             return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
         }
         if (checkIfDirNeedLogin(request, baseFolder)) {
@@ -61,7 +67,6 @@ public class FileController {
     @GetMapping("/download/{baseFolder}")
     public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable String baseFolder, String uri) throws IOException {
         if (checkIfDirectoryTraversal(uri)) {
-            logUtil.warn(this, "尝试对路径穿越(download):" + uri);
             return;
         }
         if (checkIfDirNeedLogin(request, baseFolder)) {
@@ -85,7 +90,6 @@ public class FileController {
     @GetMapping("/create")
     public R create(Boolean trueFolderFalseFile, String baseFolder, String uri, String name) {
         if (checkIfDirectoryTraversal(uri + name)) {
-            logUtil.warn(this, "尝试对路径穿越(create):" + uri);
             return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
         }
         try {
@@ -109,7 +113,6 @@ public class FileController {
     @GetMapping("/delete")
     public R delete(String baseFolder, String uri) {
         if (checkIfDirectoryTraversal(uri)) {
-            logUtil.warn(this, "尝试对路径穿越(delete):" + uri);
             return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
         }
         File file = new File(switchBaseFolder(baseFolder) + uri);
@@ -122,7 +125,6 @@ public class FileController {
     @GetMapping("/rename")
     public R rename(String baseFolder, String uri, String oldName, String newName) {
         if (checkIfDirectoryTraversal(uri + oldName) || checkIfDirectoryTraversal(newName)) {
-            logUtil.warn(this, "尝试对路径穿越(rename):" + uri);
             return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
         }
         File file = new File(switchBaseFolder(baseFolder) + uri + oldName);
@@ -130,6 +132,24 @@ public class FileController {
         System.out.println(new File(switchBaseFolder(baseFolder) + uri + oldName).getPath());
         System.out.println(new File(switchBaseFolder(baseFolder) + uri + newName).getPath());
         return new R("修改成功");
+    }
+
+    @ApiOperation("分享文件")
+    @GetMapping("/share")
+    public R share(HttpServletRequest request, String baseFolder, String uri) {
+        if (checkIfDirectoryTraversal(uri)) {
+            return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
+        }
+        if (checkIfDirNeedLogin(request, baseFolder)) {
+            return new R<>(401, "请先登录");
+        }
+        String shareUri = switchBaseFolder(baseFolder) + uri;
+        String shareId = dbUtil.isSharedUri(shareUri);
+        if (null == shareId){
+            shareId = uuidUtil.makeAppointBitUUID(8);
+            dbUtil.insertShare(shareId, shareUri);
+        }
+        return new R(shareId);
     }
 
 
@@ -165,7 +185,11 @@ public class FileController {
     private boolean checkIfDirectoryTraversal(String uri) {
         int t1 = uri.indexOf("../");//通过正斜杠穿越
         int t2 = uri.indexOf("..\\");//通过反斜杠穿越
-        return t1 > -1 || t2 > -1;
+        if (t1 > -1 || t2 > -1) {
+            logUtil.warn(this, "尝试对路径穿越:" + uri);
+            return true;
+        }
+        return false;
     }
 
 }

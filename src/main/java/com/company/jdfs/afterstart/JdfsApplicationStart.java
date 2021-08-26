@@ -14,6 +14,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -52,13 +53,13 @@ public class JdfsApplicationStart implements ApplicationRunner {
         fileUtil.coverFileAsByte(temp, new File(JdfsConstant.READ_ME));
     }
 
-    private void dbInit(boolean exist) throws IOException {
+    private void dbInit(boolean exist) {
         if (exist) {
             try {
                 dbUtil.deserializeDB();
                 logUtil.info(this, "数据文件反序列化成功");
                 return;
-            } catch (ClassNotFoundException e) {
+            } catch (RuntimeException | IOException | ClassNotFoundException e) {
                 logUtil.info(this, "反序列化数据失败 尝试重写数据文件");
             }
         } else {
@@ -66,7 +67,8 @@ public class JdfsApplicationStart implements ApplicationRunner {
         }
         InnerDB db = dbUtil.getInstance();
         db.setUsers(new HashSet<>());
-        db.getUsers().add(new User("admin", md5Util.createMd5("admin",JdfsConstant.MD5_SALT), Identity.ADMIN));
+        db.setShare(new HashMap<>());
+        db.getUsers().add(new User("admin", md5Util.createMd5("admin", JdfsConstant.MD5_SALT), Identity.ADMIN));
         dbUtil.serializeDB();
         logUtil.info(this, "数据文件已配置为默认");
     }

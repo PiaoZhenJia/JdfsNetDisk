@@ -4,6 +4,7 @@ import com.company.jdfs.entity.User;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -15,6 +16,8 @@ public class InnerDB implements Serializable {
     private static InnerDB db;
 
     private HashSet<User> users;
+
+    private HashMap<String,String> share;
 
     /**
      * 单例模式-私有化构造器
