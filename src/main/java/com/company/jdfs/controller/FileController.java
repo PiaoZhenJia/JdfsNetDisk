@@ -4,6 +4,7 @@ import com.company.app.common.base.R;
 import com.company.app.common.security.Authority;
 import com.company.app.common.utils.FileUtil;
 import com.company.app.common.utils.LogUtil;
+import com.company.app.common.utils.Md5Util;
 import com.company.app.common.utils.UUIDUtil;
 import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.database.DBUtil;
@@ -20,7 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * @author 朴朴朴 https://github.com/PiaoZhenJia
@@ -38,6 +42,8 @@ public class FileController {
     private DBUtil dbUtil;
     @Autowired
     private UUIDUtil uuidUtil;
+    @Autowired
+    private Md5Util md5Util;
 
     @ApiOperation("查看文件夹")
     @PostMapping("/select/{baseFolder}")
@@ -73,16 +79,7 @@ public class FileController {
             return;
         }
         File file = new File(switchBaseFolder(baseFolder) + uri);
-        byte[] bytes = fileUtil.getByteFromFile(file);
-        response.reset();
-        //设置相应类型application/octet-stream
-        response.setContentType("applicatoin/octet-stream");
-        //设置头信息
-        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));
-        // 写入到流
-        ServletOutputStream out = response.getOutputStream();
-        out.write(bytes);
-        out.close();
+        sendFile(response, file);
     }
 
     @Authority("user")
@@ -145,13 +142,56 @@ public class FileController {
         }
         String shareUri = switchBaseFolder(baseFolder) + uri;
         String shareId = dbUtil.isSharedUri(shareUri);
-        if (null == shareId){
-            shareId = uuidUtil.makeAppointBitUUID(8);
-            dbUtil.insertShare(shareId, shareUri);
+        if (switchBaseFolder(baseFolder).equals(JdfsConstant.COMMON_FILE_DIR)) {
+            //公共分享没有密码
+            if (null == shareId) {
+                //未被分享过 直接生成uuid作为key值
+                shareId = uuidUtil.makeAppointBitUUID(8);
+                dbUtil.insertShare(shareId, shareUri);
+            }
+        } else {
+            //私有分享需要密码
+            if (null == shareId) {
+                //未被分享过 先生成分享key
+                shareId = uuidUtil.makeAppointBitUUID(8);
+                dbUtil.insertShare(shareId, shareUri);
+            }
+            //总是根据分享key生成4位md5作为密码
+            shareId += md5Util.createMd5(shareId, JdfsConstant.MD5_SALT).substring(0, 4);
         }
         return new R(shareId);
     }
 
+    @ApiOperation("分享提取-获取下载地址")
+    @GetMapping("/shareCheck")
+    public R shareCheck(String shareKey, String sharePwd) throws IOException {
+        String key = shareKey.trim().toLowerCase();
+        String sharePath = dbUtil.getShareFilePathByKey(key);
+        if (null == sharePath) {
+            return new R(403, "提取无效 请核查输入信息");
+        }
+        if (sharePath.startsWith(JdfsConstant.PRIVATE_FILE_DIR)) {
+            //私有路径验证密码
+            if (!md5Util.createMd5(key, JdfsConstant.MD5_SALT).substring(0, 4).equals(sharePwd.trim().toLowerCase())) {
+                //密码错误
+                return new R(403, "提取无效 请核查输入信息");
+            }
+        }
+        String url = uuidUtil.make32BitUUID();
+        dbUtil.addTemp(url, sharePath);
+        return new R(new File(sharePath).getName()).setDataValue(url);
+    }
+
+    @ApiOperation("分享文件-根据临时地址下载")
+    @GetMapping("/shareDownload")
+    public void shareDownload(HttpServletResponse response, String param) throws IOException {
+        String path = dbUtil.getTempValueByKey(param);
+        if (null == path){
+            response.sendError(404);
+            return;
+        }
+        sendFile(response,new File(path));
+    }
 
     /**
      * 将前端baseFolder转换为后端路径
@@ -190,6 +230,22 @@ public class FileController {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 发送文件方法抽取
+     */
+    private void sendFile(HttpServletResponse response, File file) throws IOException {
+        byte[] bytes = fileUtil.getByteFromFile(file);
+        response.reset();
+        //设置相应类型application/octet-stream
+        response.setContentType("applicatoin/octet-stream");
+        //设置头信息
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));
+        // 写入到流
+        ServletOutputStream out = response.getOutputStream();
+        out.write(bytes);
+        out.close();
     }
 
 }

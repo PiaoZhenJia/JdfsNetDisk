@@ -5,17 +5,12 @@ import com.company.app.common.utils.LogUtil;
 import com.company.app.common.utils.Md5Util;
 import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.database.DBUtil;
-import com.company.jdfs.database.InnerDB;
-import com.company.jdfs.entity.Identity;
-import com.company.jdfs.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * @author 朴朴朴 https://github.com/PiaoZhenJia
@@ -65,11 +60,7 @@ public class JdfsApplicationStart implements ApplicationRunner {
         } else {
             logUtil.info(this, "数据文件不存在");
         }
-        InnerDB db = dbUtil.getInstance();
-        db.setUsers(new HashSet<>());
-        db.setShare(new HashMap<>());
-        db.getUsers().add(new User("admin", md5Util.createMd5("admin", JdfsConstant.MD5_SALT), Identity.ADMIN));
-        dbUtil.serializeDB();
+        dbUtil.setDBToDefaultState();
         logUtil.info(this, "数据文件已配置为默认");
     }
 

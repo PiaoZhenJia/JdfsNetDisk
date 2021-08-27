@@ -16,3 +16,33 @@ function shareIdToInput() {
         }
     }
 }
+
+function cancelToDesktop() {
+    parent.changeMainPage("/page/desktop.html")
+}
+
+function getShareFile() {
+    $.ajax({
+        url: "/api/file/shareCheck",
+        method: "get",
+        data: {
+            shareKey: $("#shareId").val(),
+            sharePwd: $("#sharePwd").val()
+        },
+        success: function (res) {
+            if (res.status != 200) {
+                parent.myAlert("error", res.message)
+                return
+            }
+            $("#getShareBtn").hide()
+            $("#step1").hide()
+            $("#midSpace").hide()
+            $("#step2").show()
+            $("#shareName").text("文件 : [ " + res.message + " ]")
+            $("img").click(function () {
+                window.location.href = "/api/file/shareDownload?param=" + res.dataValue
+            })
+            clickFlash($("#outSide"),500)
+        }
+    })
+}

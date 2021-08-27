@@ -20,6 +20,11 @@ public class InnerDB implements Serializable {
     private HashMap<String,String> share;
 
     /**
+     * 临时使用的数据 声明transient不参与序列化
+     */
+    private transient HashMap<String,String> temp;
+
+    /**
      * 单例模式-私有化构造器
      */
     private InnerDB() {

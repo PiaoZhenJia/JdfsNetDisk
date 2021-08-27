@@ -12,8 +12,8 @@ $(
     refreshTable(),
     $("#insertNew").click(function () {
         innerPageInit()
-        $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad",function (){
-            showFlash($("#needLoad"),1000)
+        $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad", function () {
+            showFlash($("#needLoad"), 1000)
         })
     })
 )
@@ -64,7 +64,7 @@ function submitInsert() {
  * 关闭子页面并删除其html
  */
 function cancelInnerPage() {
-    hideFlash($("#needLoad"),500)
+    hideFlash($("#needLoad"), 500)
     hideAndDropBackground($("#_inner_page_bg"), 1000)
 }
 
@@ -208,7 +208,7 @@ function deleteCurrent(name) {
 function renameCurrent(name) {
     innerPageInit()
     $("#_inner_page_bg").load("/page/insidePage/renamePage.html #needLoad", function () {
-        showFlash($("#needLoad"),1000)
+        showFlash($("#needLoad"), 1000)
         $("#oldName").val(name)
         $("#newName").val(name)
         $("#newName").focus()
@@ -231,11 +231,22 @@ function shareCurrent(name) {//shareId
                 return
             } else {
                 innerPageInit()
+                //先查看返回的是8位还是12位分享码 如果是12位 后四位作为密码
+                let isCommon, shareKey, sharePwd
+                if (res.message.length == 8) {
+                    isCommon = true
+                    shareKey = res.message
+                } else {
+                    isCommon = false
+                    shareKey = res.message.substring(0, 8)
+                    sharePwd = res.message.substring(8, 12)
+                }
                 $("#_inner_page_bg").load("/page/insidePage/sharePage.html #needLoad", function () {
-                    showFlash($("#needLoad"),1000)
+                    showFlash($("#needLoad"), 1000)
                     let text = "我使用朴朴个人云盘分享了: [ " + name + " ]\n"
-                    text += "提取链接: [ " + window.location.href + "?share_id=" + res.message + " ]\n"
-                    text += "提取码: [ " + res.message + " ]\n"
+                    text += "提取链接: [ " + top.location.href + "?share_id=" + shareKey + " ]\n"
+                    text += "提取码: [ " + shareKey + " ]\n"
+                    text += isCommon ? "无需密码" : ("密码 [ " + sharePwd + " ]")
                     $("#shareName").text("分享文件:" + name)
                     $("#shareId").val(text)
                     parent.myAlert("success", "文件已分享")

@@ -3,6 +3,7 @@ package com.company.jdfs.database;
 import com.company.app.common.utils.Md5Util;
 import com.company.app.common.utils.SerializableUtil;
 import com.company.jdfs.JdfsConstant;
+import com.company.jdfs.entity.Identity;
 import com.company.jdfs.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class DBUtil {
     /**
      * 通过单例方法获取数据库实例
      */
-    public InnerDB getInstance() {
+    private InnerDB getInstance() {
         return InnerDB.getInstance();
     }
 
@@ -46,6 +47,7 @@ public class DBUtil {
      */
     public void deserializeDB() throws IOException, ClassNotFoundException, RuntimeException {
         InnerDB.setDb((InnerDB) serializableUtil.fileToObject(JdfsConstant.JDFS_DB));
+        InnerDB.getInstance().setTemp(new HashMap<>());
     }
 
     /**
@@ -107,6 +109,7 @@ public class DBUtil {
 
     /**
      * 判断是否文件已经被分享
+     *
      * @param shareUri 文件路径
      * @return 如果已经被分享 返回已有分享码 否则返回null
      */
@@ -129,5 +132,40 @@ public class DBUtil {
     public void insertShare(String shareId, String shareUri) {
         InnerDB.getInstance().getShare().put(shareId, shareUri);
         serializeDB();
+    }
+
+    /**
+     * 根据分享码获取文件路径
+     */
+    public String getShareFilePathByKey(String shareKey) {
+        return InnerDB.getInstance().getShare().get(shareKey);
+    }
+
+    /**
+     * 数据库重置
+     */
+    public void setDBToDefaultState() {
+        InnerDB db = getInstance();
+        db.setUsers(new HashSet<>());
+        db.setShare(new HashMap<>());
+        db.setTemp(new HashMap<>());
+        db.getUsers().add(new User("admin", md5Util.createMd5("admin", JdfsConstant.MD5_SALT), Identity.ADMIN));
+        serializeDB();
+    }
+
+    /**
+     * 添加临时信息到数据库
+     */
+    public void addTemp(String key, String value) {
+        InnerDB.getInstance().getTemp().put(key, value);
+    }
+
+    /**
+     * 从临时库中获取信息
+     * @param param
+     * @return
+     */
+    public String getTempValueByKey(String param) {
+        return InnerDB.getInstance().getTemp().get(param);
     }
 }
