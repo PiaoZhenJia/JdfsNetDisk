@@ -14,8 +14,9 @@ body {
     border-radius: 1rem;
 }
 
-#insertNew {
-    margin: 1rem;
+#insertNew,#updateNew {
+    margin-top: 1rem;
+    margin-left: 1rem;
 }
 
 .uriBtn {

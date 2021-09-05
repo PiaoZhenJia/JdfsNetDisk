@@ -10,10 +10,13 @@ import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.database.DBUtil;
 import com.company.jdfs.entity.FileAttribute;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -186,11 +189,36 @@ public class FileController {
     @GetMapping("/shareDownload")
     public void shareDownload(HttpServletResponse response, String param) throws IOException {
         String path = dbUtil.getTempValueByKey(param);
-        if (null == path){
+        if (null == path) {
             response.sendError(404);
             return;
         }
-        sendFile(response,new File(path));
+        sendFile(response, new File(path));
+    }
+
+    @Authority("user")
+    @ApiOperation("文件上传")
+    @PostMapping("/upload")
+    public R upload(@RequestParam String baseFolder, @RequestParam String uri, @RequestPart MultipartFile file)//此处不能使用@RequestBody注解
+            throws IOException {
+        File needSave = null;
+        try {
+            if (checkIfDirectoryTraversal(uri)) {
+                return new R(403, "检测到路径穿越 日志已被记录 请勿玩火");
+            }
+            needSave = new File(switchBaseFolder(baseFolder) + uri + File.separator + file.getOriginalFilename());
+            if (needSave.exists()) {
+                return new R(403, "同名文件(夹)已经存在,请更名后重新提交");
+            }
+            //transferTo方法在此有一个bug 会将相对路径生成的file指向容器在操作系统的临时文件目录 故先根据相对路径生成file 然后获取该file的绝对路径 然后再使用transferTo方法即可绕过
+            file.transferTo(new File(needSave.getAbsolutePath()));
+            return new R("上传成功");
+        } catch (RuntimeException e) {
+            if (null != needSave){
+                needSave.deleteOnExit();
+            }
+            return new R("上传失败");
+        }
     }
 
     /**

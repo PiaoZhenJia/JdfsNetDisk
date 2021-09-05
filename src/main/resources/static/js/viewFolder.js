@@ -10,11 +10,70 @@ let uri = "/"
 $(
     refreshUri(),
     refreshTable(),
+    /**
+     * 新建按钮绑定
+     */
     $("#insertNew").click(function () {
+        parent.clickFlash($("#insertNew"), 500)
         innerPageInit()
         $("#_inner_page_bg").load("/page/insidePage/insertPage.html #needLoad", function () {
             showFlash($("#needLoad"), 1000)
         })
+    }),
+    /**
+     * 上传按钮绑定
+     */
+    $("#updateNew").click(async function () {
+        clickFlash($("#updateNew"), 500)
+        let isLogin = parent.callTopFrameRefresh();
+        if (isLogin) {
+            parent.myAlert("success", "已确认登录状态")
+            if ($("#updateNew").text() == "上传") {
+                $("#upLoadFileGiven").click()
+            } else {
+                parent.myAlert("warning", "同时仅允许一个上传")
+            }
+        } else {
+            parent.myAlert("warning", "上传功能需登陆后使用")
+        }
+
+    }),
+    /**
+     * 选择后自动上传
+     */
+    $("#upLoadFileGiven").change(function () {
+        let formData = new FormData();
+        formData.append('file', $('#upLoadFileGiven')[0].files[0]);
+        $.ajax({
+            url: '/api/file/upload?baseFolder=' + parent.getPageState() + "&uri=" + uri,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            xhr: function () {
+                let xhr = new XMLHttpRequest();
+                //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+                xhr.upload.addEventListener('progress', function (e) {
+                    let process = (e.loaded / e.total) * 100;
+                    $("#updateNew").text(process.toFixed(0) + "%")
+                })
+                return xhr;
+            },
+            success: function (res) {
+                $("#updateNew").text("上传")
+                parent.myAlert("success", res.message)
+                refreshTable()
+            },
+            error: function (res) {
+                $("#updateNew").text("上传")
+                if (res.status == 401) {
+                    parent.myAlert("error", "登录已经失效")
+                } else {
+                    parent.myAlert("error", "出错了(" + (res.message != undefined ? res.message : "未知错误") + ")")
+                }
+            }
+        })
+        $("#upLoadFileGiven").val("")
     })
 )
 
@@ -33,6 +92,7 @@ function innerPageInit() {
 function submitInsert() {
     if ($("#inputName").val() == '') {
         parent.myAlert("warning", "名称不能为空")
+        parent.clickFlash($("#inputName"), 500)
         return
     }
     let choose = $("input[name='fileFolder']:checked").val();
@@ -160,7 +220,7 @@ function refreshTable() {
                 line += fileIco
                 line += e.name
                 line += "<span>"
-                line += "大小:" + e.length + "b"
+                line += "大小:" + sizeFormatter(e.length)
                 line += "</span>"
                 line += "</div>"
                 //右侧部分
@@ -177,6 +237,32 @@ function refreshTable() {
             refreshTableHeight()
         }
     })
+}
+
+/**
+ * 格式化显示文件大小
+ * @param numb 文件总字节数
+ */
+function sizeFormatter(numb) {
+    if (numb < 1024) {
+        return numb + "B"
+    } else {
+        numb /= 1024
+    }
+
+    if (numb < 1024) {
+        return numb.toFixed(2) + "K"
+    } else {
+        numb /= 1024
+    }
+
+    if (numb < 1024) {
+        return numb.toFixed(2) + "M"
+    } else {
+        numb /= 1024
+        return numb.toFixed(2) + "G"
+    }
+
 }
 
 /**

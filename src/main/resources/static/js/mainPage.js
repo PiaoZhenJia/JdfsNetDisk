@@ -58,7 +58,7 @@ function getPageState() {
  * 通知上方固定部分刷新登录状态
  */
 function callTopFrameRefresh() {
-    $('#topFrame')[0].contentWindow.refreshLoginStatus()
+    return $('#topFrame')[0].contentWindow.refreshLoginStatus()
 }
 
 /**

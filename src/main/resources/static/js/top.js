@@ -40,9 +40,11 @@ $(
  * 更新登录状态
  */
 function refreshLoginStatus() {
+    let isLogin
     $.ajax({
         url: "/api/user/status",
         method: "get",
+        async: false,
         success: function (res) {
             if (res.status == 200) {
                 $("#adminBtn").show()
@@ -51,12 +53,15 @@ function refreshLoginStatus() {
                 $("#userName").text(res.message)
                 showFlash($("#userName"), 500)
                 localStorage.setItem("JDFS_LOGIN_NAME", res.message)
+                isLogin = true
             } else {
                 hideFlash($("#adminBtn"), 500)
                 $("#loginBtn").text("登录")
                 hideFlash($("#userName"), 500)
                 localStorage.removeItem("JDFS_LOGIN_NAME")
+                isLogin = false
             }
         }
     })
+    return isLogin
 }
