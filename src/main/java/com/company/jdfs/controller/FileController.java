@@ -10,23 +10,17 @@ import com.company.jdfs.JdfsConstant;
 import com.company.jdfs.database.DBUtil;
 import com.company.jdfs.entity.FileAttribute;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * @author 朴朴朴 https://github.com/PiaoZhenJia
@@ -36,8 +30,6 @@ import java.util.Locale;
 @RestController
 public class FileController {
 
-    @Autowired
-    private FileUtil fileUtil;
     @Autowired
     private LogUtil logUtil;
     @Autowired
