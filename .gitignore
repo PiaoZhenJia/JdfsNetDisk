@@ -35,3 +35,4 @@ build/
 ### Project ###
 LogDir
 .JdfsWorkSpace
+/已编译的jar包/
