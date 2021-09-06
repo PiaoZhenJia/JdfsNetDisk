@@ -21,8 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -214,7 +213,7 @@ public class FileController {
             file.transferTo(new File(needSave.getAbsolutePath()));
             return new R("上传成功");
         } catch (RuntimeException e) {
-            if (null != needSave){
+            if (null != needSave) {
                 needSave.deleteOnExit();
             }
             return new R("上传失败");
@@ -264,16 +263,24 @@ public class FileController {
      * 发送文件方法抽取
      */
     private void sendFile(HttpServletResponse response, File file) throws IOException {
-        byte[] bytes = fileUtil.getByteFromFile(file);
         response.reset();
         //设置相应类型application/octet-stream
         response.setContentType("applicatoin/octet-stream");
         //设置头信息
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(file.getName(), "UTF-8"));
-        // 写入到流
-        ServletOutputStream out = response.getOutputStream();
-        out.write(bytes);
-        out.close();
+        //声明文件大小
+        response.setHeader("Content-Length", ""+file.length());
+        //文件下载缓存为4k 避免文件过大时造成堆内存溢出
+        try (InputStream bis = new BufferedInputStream(new FileInputStream(file));
+             OutputStream ops = new BufferedOutputStream(response.getOutputStream())) {
+            byte[] body = new byte[1024 * 4];//缓存为4kb
+            int i;
+            while ((i = bis.read(body)) != -1) {
+                ops.write(body, 0, i);
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 
 }
