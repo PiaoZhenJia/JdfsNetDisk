@@ -153,6 +153,7 @@ function clickFolder(folder) {
  * @param file
  */
 function clickFile(file) {
+    parent.myAlert("success", "正在准备下载")
     window.location.href = "/api/file/download/" + parent.getPageState() + "?uri=" + uri + file
 }
 
