@@ -153,7 +153,7 @@ function clickFolder(folder) {
  * @param file
  */
 function clickFile(file) {
-    window.location.href = "/download/" + parent.getPageState() + "?uri=" + uri + file
+    window.location.href = "/api/file/download/" + parent.getPageState() + "?uri=" + uri + file
 }
 
 /**
