@@ -157,6 +157,42 @@ function clickFile(file) {
     window.location.href = "/api/file/download/" + parent.getPageState() + "?uri=" + uri + file
 }
 
+//仅为傻子提示一次
+let hintFirstTime = true
+
+/**
+ * 在线预览图片
+ * @param file
+ */
+function showPicture(file) {
+    if (hintFirstTime) {
+        hintFirstTime = false
+        parent.myAlert("warning", "点击预览窗口即可关闭", 5000)
+    }
+    innerPageInit()
+    let html = "<img class='preview' src='/api/file/download/" + parent.getPageState() + "?uri=" + uri + file + "' />"
+    $("#_inner_page_bg").html(html)
+    $("#_inner_page_bg").click(function () {
+        hideAndDropBackground($("#_inner_page_bg"), 500)
+    })
+}
+
+/**
+ * 文件可否有进一步操作
+ */
+function ifCanShow(name) {
+    let index = name.lastIndexOf(".")
+    if (index > 0) {
+        let suffix = name.substr(index + 1);
+        const imgList = ['png', 'jpg', 'jpeg', 'bmp', 'gif'];
+        if (imgList.find(item => item === suffix)) {//判断为图片
+            return "<img src='/ico/eye.png' title='图片预览' onclick='showPicture(\"" + name + "\")'>"
+        }
+    }
+    //默认不拼接
+    return "";
+}
+
 /**
  * 刷新下方内容窗口
  */
@@ -230,6 +266,7 @@ function refreshTable() {
                 line += "<img src='/ico/edit.png' title='修改名称' onclick='renameCurrent(\"" + e.name + "\")'>"
                 // line += "<img src='/ico/download.png' title='高级下载' onclick='downloadCurrent(\"" + e.name + "\")'>"
                 line += "<img src='/ico/share.png' title='分享文件' onclick='shareCurrent(\"" + e.name + "\")'>"
+                line += ifCanShow(e.name)
                 line += "</div>"
                 line += "</div>"
                 html += line

@@ -2,7 +2,6 @@ package com.company.jdfs.controller;
 
 import com.company.app.common.base.R;
 import com.company.app.common.security.Authority;
-import com.company.app.common.utils.FileUtil;
 import com.company.app.common.utils.LogUtil;
 import com.company.app.common.utils.Md5Util;
 import com.company.app.common.utils.UUIDUtil;

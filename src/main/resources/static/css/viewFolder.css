@@ -65,7 +65,7 @@ img {
 }
 
 .tdRightDiv {
-    width: 6rem;
+    width: 8.5rem;
 }
 
 .tdRightDiv > img:hover {
@@ -112,4 +112,11 @@ span {
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: 0 0 1rem white;
+}
+
+.preview {
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
 }
