@@ -1,0 +1,22 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#outSideDiv {
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1rem white;
+    border-radius: 1rem;
+}
+
+#leftTop{
+    display: flex;
+}

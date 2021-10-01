@@ -19,7 +19,7 @@ $(
                 parent.changeMainPage("/page/desktop.html")
                 $("#loginBtn").text("登录")
                 break;
-            case "退出":
+            case "登出":
                 $.ajax({
                     url: "/api/user/logout",
                     method: "get",
@@ -33,7 +33,22 @@ $(
                 localStorage.removeItem("JDFS_LOGIN_NAME")
                 break;
         }
-    })
+    }),
+    $("#adminBtn").click(function () {
+            clickFlash($("#adminBtn"), 500)
+            let str = $("#adminBtn").text()
+            switch (str) {
+                case "管理":
+                    parent.changeMainPage("/page/admin.html")
+                    $("#adminBtn").text("返回")
+                    break;
+                case "返回":
+                    parent.changeMainPage("/page/desktop.html")
+                    $("#adminBtn").text("管理")
+                    break;
+            }
+        }
+    )
 )
 
 /**
@@ -49,7 +64,7 @@ function refreshLoginStatus() {
             if (res.status == 200) {
                 $("#adminBtn").show()
                 showFlash($("#adminBtn"), 500)
-                $("#loginBtn").text("退出")
+                $("#loginBtn").text("登出")
                 $("#userName").text(res.message)
                 showFlash($("#userName"), 500)
                 localStorage.setItem("JDFS_LOGIN_NAME", res.message)
