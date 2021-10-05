@@ -15,12 +15,15 @@ public class AfterApplicationStart implements ApplicationRunner {
 
     @Value("${my-param.security.open-dev-controller}")
     private Boolean openDevController;
+    @Value("${springfox.documentation.enabled}")
+    private Boolean openSwaggerUi;
 
     @Autowired
     private LogUtil logUtil;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        logUtil.info(this, "风险控制器 [DevController] 配置状态 : " + (openDevController ? "开启" : "关闭"));
+        logUtil.info(this, "Springfox-Swagger 接口Api配置状态\t: " + (openSwaggerUi ? "开启" : "关闭"));
+        logUtil.info(this, "风险控制器 [DevController] 配置状态\t: " + (openDevController ? "开启" : "关闭"));
     }
 }

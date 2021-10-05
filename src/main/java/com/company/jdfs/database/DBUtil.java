@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * @author 朴朴朴 https://github.com/PiaoZhenJia
@@ -66,10 +65,9 @@ public class DBUtil {
      */
     public boolean checkNameIsNotExist(String userName) {
         HashSet<User> users = InnerDB.getInstance().getUsers();
-        Iterator<User> iterator = users.iterator();
         //查找重名
-        while (iterator.hasNext()) {
-            if (iterator.next().getUserName().equals(userName)) {
+        for (User user : users) {
+            if (user.getUserName().equals(userName)) {
                 return false;
             }
         }
@@ -162,8 +160,6 @@ public class DBUtil {
 
     /**
      * 从临时库中获取信息
-     * @param param
-     * @return
      */
     public String getTempValueByKey(String param) {
         return InnerDB.getInstance().getTemp().get(param);

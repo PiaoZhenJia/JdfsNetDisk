@@ -17,6 +17,16 @@ body {
     border-radius: 1rem;
 }
 
-#leftTop{
+#leftTop {
     display: flex;
+}
+
+#leftSide {
+    margin-left: 2rem;
+}
+
+.btn {
+    width: max-content;
+    margin: 0.5rem;
+    padding: 0.5rem;
 }
