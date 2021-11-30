@@ -1,0 +1,72 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#outSideDiv {
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 1rem white;
+    border-radius: 1rem;
+}
+
+#backUpBtn {
+    margin: 1rem;
+}
+
+
+#tableDiv {
+    margin: 1rem;
+    overflow: auto;
+    width: 16rem;
+}
+
+.trDiv {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.trDiv:nth-child(odd) {
+    background-color: #FFCCCC;
+    transition: .5s;
+}
+
+.trDiv:nth-child(even) {
+    background-color: #ffEEEE;
+    transition: .5s;
+}
+
+.trDiv:hover {
+    background-color: #FF9999;
+    transition: .5s;
+}
+
+.tdLeftDiv {
+    width: calc(100% - 6rem);
+}
+
+.tdRightDiv {
+    width: 8.5rem;
+}
+
+.tdRightDiv > img:hover {
+    background-color: #ffEEEE;
+    transition: .5s;
+}
+
+#insideDiv{
+    display: flex;
+    height: inherit;
+}
+
+#runFrame {
+    width: 100%;
+    margin-bottom: 3rem;
+}

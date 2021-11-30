@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--@author 朴朴朴 https://github.com/PiaoZhenJia-->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/utils/file2base64.css">
+</head>
+<body>
+<div id="outSide">
+    <p>请将任意文件拖动到此区域转换[此功能纯JS实现]</p>
+    <div style="display: flex">
+        <div class="btn" id="copyBtn">复制内容</div>
+        <div style="width: 2rem"></div>
+        <input type="checkbox" id="checkFileHeader">
+        <label for="checkFileHeader">文件头</label>
+    </div>
+    <br>
+    <textarea class="empty" readonly id="b64area"></textarea>
+</div>
+</body>
+</html>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/utils/file2base64.js"></script>

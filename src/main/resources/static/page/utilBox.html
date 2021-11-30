@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--@author 朴朴朴 https://github.com/PiaoZhenJia-->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/utilBox.css">
+</head>
+<body>
+<div id="outSideDiv">
+    <div class="btn circleBtn" onclick="cancelToDesktop()" id="backUpBtn">返回</div>
+    <div id="insideDiv">
+        <div id="tableDiv">
+            <div class="trDiv" onclick="changeUtilPage('')">凯撒密码穷举</div>
+            <div class="trDiv" onclick="changeUtilPage('')">BASE64转图片</div>
+            <div class="trDiv" onclick="changeUtilPage('/page/utils/file2base64.html')">任意文件转BASE64</div>
+            <div class="trDiv" onclick="changeUtilPage('')">字符串与BASE64互转</div>
+            <div class="trDiv" onclick="changeUtilPage('')">JS脚本在线运行</div>
+        </div>
+            <iframe id="runFrame" src="" frameborder="no" scrolling="no"></iframe>
+    </div>
+</div>
+</body>
+</html>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/utilBox.js"></script>

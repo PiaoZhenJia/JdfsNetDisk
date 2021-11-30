@@ -23,5 +23,12 @@ $(
      */
     $("#shareBtn").click(function () {
         parent.changeMainPage("/page/shareDownload.html")
+    }),
+
+    /**
+     * 在线工具按钮监听
+     */
+    $("#utilBtn").click(function () {
+        parent.changeMainPage("/page/utilBox.html")
     })
 )

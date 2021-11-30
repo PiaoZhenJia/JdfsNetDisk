@@ -17,7 +17,7 @@ body {
     border-radius: 1rem;
 }
 
-#insertNew,#updateNew {
+#insertNew, #updateNew {
     margin-top: 1rem;
     margin-left: 1rem;
 }
@@ -39,13 +39,13 @@ img {
     flex-wrap: wrap;
 }
 
-.trDiv {
-    display: flex;
-}
-
 #tableDiv {
     margin: 1rem;
     overflow: auto;
+}
+
+.trDiv {
+    display: flex;
 }
 
 .trDiv:nth-child(odd) {
