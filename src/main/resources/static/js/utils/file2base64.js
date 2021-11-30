@@ -19,7 +19,7 @@ window.addEventListener("drop", function (event) {
         let base64Head = base64[0]
         let base64Body = base64[1]
         //截取文件头
-        if($("#checkFileHeader").prop("checked") == false){
+        if ($("#checkFileHeader").prop("checked") == false) {
             //如果checkbox未被选中
             $("#b64area").html(base64Body)
         } else {
@@ -38,5 +38,4 @@ $("#copyBtn").click(function () {
         document.execCommand('copy');
         top.myAlert("success", "已复制内容到剪切板")
     }
-
 })
