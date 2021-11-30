@@ -26,6 +26,7 @@ window.addEventListener("drop", function (event) {
             //如果checkbox被选中
             $("#b64area").html(base64Head + "," + base64Body)
         }
+        top.myAlert("success", "转换成功")
     };
     reader.readAsDataURL(event.dataTransfer.files[0])
     event.preventDefault();
@@ -38,4 +39,5 @@ $("#copyBtn").click(function () {
         document.execCommand('copy');
         top.myAlert("success", "已复制内容到剪切板")
     }
+    clickFlash($("#copyBtn"), 500)
 })

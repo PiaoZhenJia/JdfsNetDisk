@@ -1,0 +1,19 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
+#outputImg {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    margin-top: 0.5rem;
+}
+
+#changeBtn {
+    margin-top: 0.5rem;
+}
+
+#inputArea {
+    width: 100%;
+    height: 3rem;
+    resize: none;
+}
