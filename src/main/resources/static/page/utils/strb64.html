@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--@author 朴朴朴 https://github.com/PiaoZhenJia-->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/utils/strb64.css">
+</head>
+<body>
+    <div id="outSide">
+        <textarea id="needInput" placeholder="输入区域"></textarea>
+        <div style="display: flex" id="btnBox">
+            <div class="btn" onclick="sendToMiscController('base64Encode')">Base64 编码</div>
+            <div class="btn" onclick="sendToMiscController('base64Decode')">Base64 解码</div>
+            <div class="btn" onclick="sendToMiscController('base64UrlEncode')">Base64 url 编码</div>
+            <div class="btn" onclick="sendToMiscController('base64UrlDecode')">Base64 url 解码</div>
+        </div>
+        <textarea readonly id="needCopy" placeholder="输出区域"></textarea>
+        <div class="btn" id="copyBtn">复制</div>
+    </div>
+</body>
+</html>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/utils/strb64.js"></script>
