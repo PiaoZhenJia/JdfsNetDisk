@@ -1,0 +1,29 @@
+/**
+ * @author 朴朴朴 https://github.com/PiaoZhenJia
+ */
+body {
+    word-break: break-all;
+    height: 100%;
+}
+
+#outSide {
+    height: calc(100% - 4rem);
+    background-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 1rem white;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+textarea {
+    width: 100%;
+    resize: none;
+}
+
+#inputArea {
+    height: 60%;
+}
+
+#outputArea {
+    height: 20%;
+}

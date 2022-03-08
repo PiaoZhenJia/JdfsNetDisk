@@ -7,6 +7,7 @@
  * @param url 直接使用了控制器的拦截路径
  */
 function sendToMiscController(url) {
+    clickFlash($("#needCopy"),500)
     $.ajax({
         url: "/misc/" + url,
         method: "post",
@@ -26,6 +27,7 @@ function sendToMiscController(url) {
  * 复制按钮
  */
 $("#copyBtn").click(function () {
+    clickFlash($("#copyBtn"),500)
     $("#needCopy").select()
     if (document.execCommand('copy')) {
         document.execCommand('copy');
