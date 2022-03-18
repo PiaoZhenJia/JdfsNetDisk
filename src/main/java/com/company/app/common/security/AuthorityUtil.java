@@ -34,7 +34,7 @@ public class AuthorityUtil {
         Authority authority = null;
         try{
             authority = method.getAnnotation(Authority.class);
-        }catch (Exception e){
+        }catch (Exception ignored){
         }
         //判断是否为免验证路径
         if (null == authority || authority.value() == "none") {

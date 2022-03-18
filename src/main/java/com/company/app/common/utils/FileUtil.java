@@ -1,8 +1,6 @@
 package com.company.app.common.utils;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,7 +81,7 @@ public class FileUtil {
         return this.getClass().getClassLoader().getResourceAsStream(fileUrl);
     }
 
-    public byte[] getByteFromFile(File file) throws IOException {
+    public byte[] getByteFromFile(File file) {
         try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
              ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length())) {
             int buf_size = 1024;

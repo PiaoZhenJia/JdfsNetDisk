@@ -22,7 +22,7 @@ public class AfterApplicationStart implements ApplicationRunner {
     private LogUtil logUtil;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         logUtil.info(this, "Springfox-Swagger 接口Api配置状态\t: " + (openSwaggerUi ? "开启" : "关闭"));
         logUtil.info(this, "风险控制器 [DevController] 配置状态\t: " + (openDevController ? "开启" : "关闭"));
     }

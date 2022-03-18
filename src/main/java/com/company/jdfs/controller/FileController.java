@@ -157,7 +157,7 @@ public class FileController {
 
     @ApiOperation("分享提取-获取下载地址")
     @GetMapping("/shareCheck")
-    public R shareCheck(String shareKey, String sharePwd) throws IOException {
+    public R shareCheck(String shareKey, String sharePwd) {
         String key = shareKey.trim().toLowerCase();
         String sharePath = dbUtil.getShareFilePathByKey(key);
         if (null == sharePath) {
