@@ -1,6 +1,6 @@
 package com.company.app.common.utils;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +25,7 @@ public class FileUtil {
     }
 
     public String getFileExt(String originalFilename) {
-        return FilenameUtils.getExtension(originalFilename);
+        return FileUtils.getExtension(originalFilename);
     }
 
     public void createDirIfNotExist(String needDir) {
