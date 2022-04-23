@@ -88,6 +88,13 @@ public class DBUtil {
     }
 
     /**
+     * 测试用方法 打印用户表数据内容
+     */
+    public void userDbShow(){
+        System.out.println(InnerDB.getInstance().getUsers().toString());
+    }
+
+    /**
      * 修改用户名
      */
     public boolean changeUserName(String oldName, String userName) {

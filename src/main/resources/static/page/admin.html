@@ -11,12 +11,13 @@
         <div id="leftSide">
             <h2>欢迎你</h2>
             <div id="leftTop">
-                <div class="btn" id="changeNameBtn">改名</div>
-                <div class="btn" id="changePwdBtn">改密</div>
+                <div class="btn" id="changeNameBtn" onclick="changeCtrlPage('./ctrlPage/changeUserName.html')">改名</div>
+                <div class="btn" id="changePwdBtn" onclick="changeCtrlPage('./ctrlPage/changePassword.html')">改密</div>
             </div>
-            <div class="btn" id="ctrlUserBtn">用户管理</div>
-            <div class="btn" id="ctrlShareBtn">分享管理</div>
+            <div class="btn" id="ctrlUserBtn" onclick="changeCtrlPage('./ctrlPage/ctrlUsers.html')">用户管理</div>
+            <div class="btn" id="ctrlShareBtn" onclick="changeCtrlPage('./ctrlPage/ctrlShare.html')">分享管理</div>
         </div>
+        <iframe id="ctrlFrame" src="" frameborder="no" scrolling="no"></iframe>
     </div>
 </body>
 </html>

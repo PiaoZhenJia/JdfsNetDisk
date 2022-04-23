@@ -15,6 +15,7 @@ body {
     background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 1rem white;
     border-radius: 1rem;
+    display: flex;
 }
 
 #leftTop {
@@ -23,6 +24,11 @@ body {
 
 #leftSide {
     margin-left: 2rem;
+}
+
+#ctrlFrame {
+    width: 100%;
+    margin: 3rem;
 }
 
 .btn {

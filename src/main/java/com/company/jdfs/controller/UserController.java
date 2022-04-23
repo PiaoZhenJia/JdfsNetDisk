@@ -25,6 +25,7 @@ public class UserController {
     @ApiOperation("用户登录")
     @GetMapping("/login")
     public R login(HttpServletRequest request, String userName, String passWord) {
+        dbUtil.userDbShow();
         if (dbUtil.checkUser(userName, passWord)) {
             request.getSession().setAttribute(JdfsConstant.SESSION_LOGIN_FLAG, userName);
             return new R("登录成功");
@@ -53,10 +54,16 @@ public class UserController {
 
     @ApiOperation("用户修改名称")
     @GetMapping("/change/userName")
-    public R changeUserName(HttpServletRequest request, @RequestParam String userName) {
+    public R changeUserName(HttpServletRequest request, @RequestParam String userName, @RequestParam String password) {
         String oldName = (String) request.getSession().getAttribute(JdfsConstant.SESSION_LOGIN_FLAG);
         if (StringUtils.isBlank(oldName)) {
             return new R(204, "请重新登录");
+        }
+        if (StringUtils.isBlank(userName)) {
+            return new R(400, "请输入正确的新用户名");
+        }
+        if (!dbUtil.checkUser(oldName, password)){
+            return new R(204, "密码校验失败");
         }
         boolean success = dbUtil.changeUserName(oldName, userName);
         if (success) {

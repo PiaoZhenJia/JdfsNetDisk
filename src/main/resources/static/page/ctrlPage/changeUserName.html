@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--@author 朴朴朴 https://github.com/PiaoZhenJia-->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/base.css"/>
+</head>
+<body>
+<h3>修改登录名</h3>
+<div>
+    输入新的登录名<input type="text" id="newName">
+</div>
+<hr>
+<div>
+    请验证登录密码<input type="password" id="pwd">
+</div>
+<hr>
+<div class="btn" id="submitBtn" onclick="submitFunc()" style="width: 3rem; margin-left: 1rem">修改</div>
+</body>
+</html>
+<script src="/js/jquery-3.5.1.js"></script>
+<script src="/js/flash.js"></script>
+<script>
+    function submitFunc() {
+        clickFlash($("#submitBtn"), 500)
+        $.ajax({
+            url: '/api/user/change/userName',
+            method: 'get',
+            data: {
+                userName: $('#newName').val(),
+                password: $('#pwd').val()
+            },
+            success: function (res) {
+                if (res.status == 200) {
+                    top.myAlert("success", res.message)
+                    localStorage.setItem("JDFS_LOGIN_NAME", $('#newName').val())
+                    $('#newName').val("")
+                    $('#pwd').val("")
+                    parent.getCurrUserName()
+                } else {
+                    top.myAlert("error", res.message)
+                }
+            },
+            error: function (err) {
+                top.myAlert("error", err.message)
+            }
+        })
+    }
+</script>
