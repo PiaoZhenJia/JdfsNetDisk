@@ -57,12 +57,9 @@
 1. 朴振嘉的爸爸妈妈提供了DNA
 2. 朴振嘉的室友提供了正确的工作环境
 3. 朴振嘉的同学提供了动力
+4. 李晔提供了部分辅助和支撑
 
-#### 特技
+#### 免责声明
 
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5. Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. 任何人自愿运行本项目，作者不声明保障用户数据的绝对安全，如若数据发生丢失损坏或泄露，作者不承担相关责任
+2. 作者建议在存储机密或私密文件时，先修改默认的弱口令。默认的用户名和密码都是admin

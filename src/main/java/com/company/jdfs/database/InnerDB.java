@@ -34,7 +34,7 @@ public class InnerDB implements Serializable {
      * 单例模式-获取数据库对象
      * protected保证只有DBUtil能访问
      */
-    protected static InnerDB getInstance() {
+    protected synchronized static InnerDB getInstance() {
         if (null == db) {
             db = new InnerDB();
         }
